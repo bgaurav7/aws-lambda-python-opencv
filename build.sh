@@ -13,7 +13,11 @@ cp -rf build/numpy/lib64/python2.7/site-packages/numpy lambda-package
 (
 	NUMPY=$PWD/lambda-package/numpy/core/include
 	cd build
-	git clone https://github.com/Itseez/opencv.git
+	git clone https://github.com/opencv/opencv_contrib.git
+	cd opencv_contrib
+	git checkout 3.2.0
+	cd ..
+	git clone https://github.com/opencv/opencv.git
 	cd opencv
 	git checkout 3.2.0
 	cmake										\
@@ -31,6 +35,7 @@ cp -rf build/numpy/lib64/python2.7/site-packages/numpy lambda-package
 		-D BUILD_TESTS=OFF						\
 		-D BUILD_PERF_TESTS=OFF					\
 		-D PYTHON2_NUMPY_INCLUDE_DIRS="$NUMPY"	\
+		-D OPENCV_EXTRA_MODULES_PATH=../opencv_contrib/modules \
 		.
 	make -j`cat /proc/cpuinfo | grep MHz | wc -l`
 )
